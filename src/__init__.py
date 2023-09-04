@@ -56,7 +56,7 @@ class MessageFlags(Exportable):
 
 
 class User(Exportable):
-    def __init__(self, user: discord.User):
+    def __init__(self, user: discord.Member | discord.User):
         self.user = user
 
     async def export(self) -> dict:
