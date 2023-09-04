@@ -37,7 +37,18 @@ class MessageFlags(Exportable):
         self.message_flags = message_flags
 
     async def export(self) -> dict:
-        ...
+        return {
+            "crossposted": self.message_flags.crossposted,
+            "is_crosspost": self.message_flags.is_crosspost(),
+            "supress_embeds": self.message_flags.suppress_embeds,
+            "source_message_deleted": self.message_flags.source_message_deleted,
+            "urgent": self.message_flags.urgent,
+            "has_thread": self.message_flags.has_thread,
+            "ephemeral": self.message_flags.ephemeral,
+            "loading": self.message_flags.loading,
+            "failed_to_mention_some_roles_in_thread": self.message_flags.failed_to_mention_some_roles_in_thread,
+            "suppress_notifications": self.message_flags.suppress_notifications,
+        }
 
 
 class User(Exportable):
