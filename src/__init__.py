@@ -13,7 +13,25 @@ class Embed(Exportable):
         self.embed = embed
 
     async def export(self) -> dict:
-        ...
+        return {
+            "title": self.embed.title,
+            "description": self.embed.description,
+            "color": self.embed.color.value if isinstance(self.embed.color, discord.Color) else self.embed.color,
+            "fields": [await EmbedField(field).export() for field in self.embed.fields],
+            # TODO: gerade gar kein bock mehr lol
+        }
+
+
+class EmbedField(Exportable):
+    def __init__(self, field: discord.EmbedField):
+        self.field = field
+
+    async def export(self) -> dict:
+        return {
+            "name": self.field.name,
+            "value": self.field.value,
+            "inline": self.field.inline,
+        }
 
 
 class Attachment(Exportable):
