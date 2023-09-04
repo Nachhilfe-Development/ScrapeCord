@@ -25,11 +25,15 @@ class Attatchment(Exportable):
 
 
 class Reactions(Exportable):
-    def __init__(self, reactions: discord.Reaction):
-        self.reactions = reactions
+    def __init__(self, reaction: discord.Reaction):
+        self.reaction = reaction
 
     async def export(self) -> dict:
-        ...
+        return {
+            "count": self.reaction.count,
+            "emoji": str(self.reaction.emoji),  # TODO: Union[Emoji, PartialEmoji, str]
+            "me": self.reaction.me,
+        }
 
 
 class MessageFlags(Exportable):
