@@ -16,12 +16,24 @@ class Embed(Exportable):
         ...
 
 
-class Attatchment(Exportable):
-    def __init__(self, attatchment: discord.Attatchment):
-        self.attatchment = attatchment
+class Attachment(Exportable):
+    def __init__(self, atatchment: discord.Attachment):
+        self.attachment = atatchment
 
     async def export(self) -> dict:
-        ...
+        return {
+            "content_type": self.attachment.content_type,
+            "ephemeral": self.attachment.ephemeral,
+            "description": self.attachment.description,
+            "is_spoiler": self.attachment.is_spoiler(),
+            "filename": self.attachment.filename,
+            "height": self.attachment.height,
+            "id": self.attachment.id,
+            "proxy_url": self.attachment.proxy_url,
+            "size": self.attachment.size,
+            "url": self.attachment.url,
+            "width": self.attachment.width,
+        }
 
 
 class Reactions(Exportable):
@@ -98,7 +110,7 @@ class Message(Exportable):
             "tts": self.message.tts,
             "type": str(self.message.type),
             "embeds": [await Embed(embed).export() for embed in self.message.embeds],
-            "attachments": [await Attatchment(attatchment).export() for attatchment in self.message.attachments],
+            "attachments": [await Attachment(attatchment).export() for attatchment in self.message.attachments],
             "reactions": [await Reactions(reaction).export() for reaction in self.message.reactions],
             "mention_everyone": self.message.mention_everyone,
             "mentions": [await User(user).export() for user in self.message.mentions],
