@@ -70,7 +70,12 @@ class Sticker(Exportable):
         self.sticker = sticker
 
     async def export(self) -> dict:
-        ...
+        return {
+            "format": str(self.sticker.format),
+            "id": self.sticker.id,
+            "name": self.sticker.name,
+            "url": self.sticker.url
+        }
 
 
 class Message(Exportable):
