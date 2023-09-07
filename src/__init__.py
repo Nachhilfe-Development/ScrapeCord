@@ -115,7 +115,6 @@ class User(Exportable):
             "is_migrated": self.user.is_migrated,
             "jump_url": self.user.jump_url,
             "public_flags": None,  # TODO: public_flags
-
         }
 
 
