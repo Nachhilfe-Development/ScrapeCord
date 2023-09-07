@@ -54,6 +54,17 @@ class Attachment(Exportable):
         }
 
 
+class Asset(Exportable):
+    def __init__(self, asset: discord.Asset):
+        self.asset = asset
+
+    async def export(self) -> dict:
+        return {
+            "key": self.asset.key,
+            "url": self.asset.url
+        }
+
+
 class Reactions(Exportable):
     def __init__(self, reaction: discord.Reaction):
         self.reaction = reaction
@@ -73,7 +84,7 @@ class MessageFlags(Exportable):
     async def export(self) -> dict:
         return {
             "crossposted": self.message_flags.crossposted,
-            "is_crosspost": self.message_flags.is_crosspost(),
+            "is_crosspost": self.message_flags.is_crossposted,
             "supress_embeds": self.message_flags.suppress_embeds,
             "source_message_deleted": self.message_flags.source_message_deleted,
             "urgent": self.message_flags.urgent,
@@ -94,8 +105,17 @@ class User(Exportable):
             "id": self.user.id,
             "name": self.user.name,
             "discriminator": self.user.discriminator,
-            "avatar_url": self.user.avatar_url,
             "display_name": self.user.display_name,
+            "accent_color": self.user.accent_color.value if isinstance(self.user.accent_color, discord.Color) else self.user.accent_color,
+            "avatar": await Asset(self.user.avatar).export(),
+            "color": self.user.color.value if isinstance(self.user.color, discord.Color) else self.user.color,
+            "created_at": self.user.created_at.timestamp(),
+            "default_avatar": await Asset(self.user.default_avatar).export(),
+            "display_avatar": await Asset(self.user.display_avatar).export(),
+            "is_migrated": self.user.is_migrated,
+            "jump_url": self.user.jump_url,
+            "public_flags": None,  # TODO: public_flags
+
         }
 
 
@@ -122,8 +142,8 @@ class Message(Exportable):
             "id": self.message.id,
             "content": self.message.content,
             "author": await User(self.message.author).export(),
-            "created_at": self.message.created_at,
-            "edited_at": self.message.edited_at,
+            "created_at": self.message.created_at.timestamp(),
+            "edited_at": self.message.edited_at.timestamp(),
             "pinned": self.message.pinned,
             "tts": self.message.tts,
             "type": str(self.message.type),
@@ -153,8 +173,8 @@ class Channel(Exportable):
             "name": self.channel.name,
             "messages": [await message.export() for message in self.messages],
             "topic": self.channel.topic,
-            "category_id": self.channel.category,
-            "created_at": self.channel.created_at,
+            "category_id": self.channel.category.id,
+            "created_at": self.channel.created_at.timestamp(),
             "guild_id": self.channel.guild.id,
             "nsfw": self.channel.is_nsfw(),
             "slowmode_delay": self.channel.slowmode_delay,
