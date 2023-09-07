@@ -18,7 +18,30 @@ class Embed(Exportable):
             "description": self.embed.description,
             "color": self.embed.color.value if isinstance(self.embed.color, discord.Color) else self.embed.color,
             "fields": [await EmbedField(field).export() for field in self.embed.fields],
-            # TODO: gerade gar kein bock mehr lol
+            "footer": {
+                "icon_url": self.embed.footer.icon_url,
+                "proxy_icon_url": self.embed.footer.proxy_icon_url,
+                "text": self.embed.footer.text,
+            },
+            "image": await EmbedMedia(self.embed.image).export() if self.embed.image else None,
+            "thumbnail": await EmbedMedia(self.embed.thumbnail).export() if self.embed.thumbnail else None,
+            "timestamp": self.embed.timestamp.timestamp() if self.embed.timestamp else None,
+            "type": self.embed.type,
+            "url": self.embed.url,
+            "video": await EmbedMedia(self.embed.video).export() if self.embed.video else None,
+        }
+
+
+class EmbedMedia(Exportable):
+    def __init__(self, embed_media: discord.EmbedMedia):
+        self.embed_media = embed_media
+
+    async def export(self) -> dict:
+        return {
+            "height": self.embed_media.height,
+            "proxy_url": self.embed_media.proxy_url,
+            "url": self.embed_media.url,
+            "width": self.embed_media.width,
         }
 
 
