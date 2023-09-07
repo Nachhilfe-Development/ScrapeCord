@@ -33,7 +33,7 @@ class Embed(Exportable):
 
 
 class EmbedMedia(Exportable):
-    def __init__(self, embed_media: discord.EmbedMedia):
+    def __init__(self, embed_media):
         self.embed_media = embed_media
 
     async def export(self) -> dict:
@@ -135,7 +135,6 @@ class User(Exportable):
             "created_at": self.user.created_at.timestamp(),
             "default_avatar": await Asset(self.user.default_avatar).export(),
             "display_avatar": await Asset(self.user.display_avatar).export(),
-            "is_migrated": self.user.is_migrated,
             "jump_url": self.user.jump_url,
             "public_flags": None,  # TODO: public_flags
         }
@@ -173,7 +172,7 @@ class Message(Exportable):
             "content": self.message.content,
             "author": await User(self.message.author).export(),
             "created_at": self.message.created_at.timestamp(),
-            "edited_at": self.message.edited_at.timestamp(),
+            "edited_at": self.message.edited_at.timestamp() if self.message.edited_at else None,
             "pinned": self.message.pinned,
             "tts": self.message.tts,
             "type": str(self.message.type),
