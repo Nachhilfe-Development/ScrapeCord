@@ -154,12 +154,20 @@ class Sticker(Exportable):
         }
 
 
+class Component(Exportable):
+    def __init__(self, component: discord.Component):
+        self.component = component
+
+    async def export(self) -> dict:
+        ...  # TODO
+
+
 class Message(Exportable):
     def __init__(self, message: discord.Message):
         self.message = message
 
     async def export(self) -> dict:
-        # TODO: channel mentions, role_mentions, activity, application, reference, interaction, components, threads
+        # TODO: channel mentions, role_mentions, activity, application, reference, interaction, threads
         return {
             "id": self.message.id,
             "content": self.message.content,
@@ -180,6 +188,7 @@ class Message(Exportable):
             "clean_content": self.message.clean_content,
             "is_system": self.message.is_system(),
             "system_content": self.message.system_content,
+            "components": [await Component(component).export() for component in self.message.components],
         }
 
 
