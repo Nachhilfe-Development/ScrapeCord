@@ -23,26 +23,22 @@ class Embed(Exportable):
                 "proxy_icon_url": self.embed.footer.proxy_icon_url,
                 "text": self.embed.footer.text,
             },
-            "image": await EmbedMedia(self.embed.image).export() if self.embed.image else None,
-            "thumbnail": await EmbedMedia(self.embed.thumbnail).export() if self.embed.thumbnail else None,
+            "image": await scrape_media(self.embed.image) if self.embed.image else None,
+            "thumbnail": await scrape_media(self.embed.thumbnail) if self.embed.thumbnail else None,
             "timestamp": self.embed.timestamp.timestamp() if self.embed.timestamp else None,
             "type": self.embed.type,
             "url": self.embed.url,
-            "video": await EmbedMedia(self.embed.video).export() if self.embed.video else None,
+            "video": await scrape_media(self.embed.video) if self.embed.video else None,
         }
 
 
-class EmbedMedia(Exportable):
-    def __init__(self, embed_media):
-        self.embed_media = embed_media
-
-    async def export(self) -> dict:
-        return {
-            "height": self.embed_media.height,
-            "proxy_url": self.embed_media.proxy_url,
-            "url": self.embed_media.url,
-            "width": self.embed_media.width,
-        }
+async def scrape_media(embed_media) -> dict:
+    return {
+        "height": embed_media.height,
+        "proxy_url": embed_media.proxy_url,
+        "url": embed_media.url,
+        "width": embed_media.width,
+    }
 
 
 async def scrape_embed_field(field: discord.EmbedField) -> dict:
