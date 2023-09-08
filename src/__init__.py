@@ -77,10 +77,10 @@ class Attachment(Exportable):
         }
 
 
-async def scrape_asset(self) -> dict:
+async def scrape_asset(asset: discord.Asset) -> dict:
     return {
-        "key": self.asset.key,
-        "url": self.asset.url
+        "key": asset.key,
+        "url": asset.url
     }
 
 
