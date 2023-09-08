@@ -88,16 +88,12 @@ class Asset(Exportable):
         }
 
 
-class Reactions(Exportable):
-    def __init__(self, reaction: discord.Reaction):
-        self.reaction = reaction
-
-    async def export(self) -> dict:
-        return {
-            "count": self.reaction.count,
-            "emoji": str(self.reaction.emoji),  # TODO: Union[Emoji, PartialEmoji, str]
-            "me": self.reaction.me,
-        }
+async def scrape_reactions(reaction: discord.Reaction) -> dict:
+    return {
+        "count": reaction.count,
+        "emoji": str(reaction.emoji),  # TODO: Union[Emoji, PartialEmoji, str]
+        "me": reaction.me,
+    }
 
 
 async def scrape_message_flags(message_flags: discord.MessageFlags) -> dict:
@@ -162,7 +158,7 @@ async def scrape_message(message: discord.Message) -> dict:
         "type": str(message.type),
         "embeds": [await Embed(embed).export() for embed in message.embeds],
         "attachments": [await Attachment(attatchment).export() for attatchment in message.attachments],
-        "reactions": [await Reactions(reaction).export() for reaction in message.reactions],
+        "reactions": [await scrape_reactions(reaction) for reaction in message.reactions],
         "mention_everyone": message.mention_everyone,
         "mentions": [await scape_user(user) for user in message.mentions],
         "webhook_id": message.webhook_id,
