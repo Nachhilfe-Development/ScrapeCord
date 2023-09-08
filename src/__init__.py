@@ -77,15 +77,11 @@ class Attachment(Exportable):
         }
 
 
-class Asset(Exportable):
-    def __init__(self, asset: discord.Asset):
-        self.asset = asset
-
-    async def export(self) -> dict:
-        return {
-            "key": self.asset.key,
-            "url": self.asset.url
-        }
+async def scrape_asset(self) -> dict:
+    return {
+        "key": self.asset.key,
+        "url": self.asset.url
+    }
 
 
 async def scrape_reactions(reaction: discord.Reaction) -> dict:
@@ -118,11 +114,11 @@ async def scape_user(user: discord.User | discord.Member) -> dict:
         "discriminator": user.discriminator,
         "display_name": user.display_name,
         "accent_color": user.accent_color.value if isinstance(user.accent_color, discord.Color) else user.accent_color,
-        "avatar": await Asset(user.avatar).export(),
+        "avatar": await scrape_asset(user.avatar),
         "color": user.color.value if isinstance(user.color, discord.Color) else user.color,
         "created_at": user.created_at.timestamp(),
-        "default_avatar": await Asset(user.default_avatar).export(),
-        "display_avatar": await Asset(user.display_avatar).export(),
+        "default_avatar": await scrape_asset(user.default_avatar),
+        "display_avatar": await scrape_asset(user.display_avatar),
         "jump_url": user.jump_url,
         "public_flags": None,  # TODO: public_flags
     }
