@@ -8,28 +8,24 @@ class Exportable(ABC):
         ...
 
 
-class Embed(Exportable):
-    def __init__(self, embed: discord.Embed):
-        self.embed = embed
-
-    async def export(self) -> dict:
-        return {
-            "title": self.embed.title,
-            "description": self.embed.description,
-            "color": self.embed.color.value if isinstance(self.embed.color, discord.Color) else self.embed.color,
-            "fields": [await scrape_embed_field(field) for field in self.embed.fields],
-            "footer": {
-                "icon_url": self.embed.footer.icon_url,
-                "proxy_icon_url": self.embed.footer.proxy_icon_url,
-                "text": self.embed.footer.text,
-            },
-            "image": await scrape_media(self.embed.image) if self.embed.image else None,
-            "thumbnail": await scrape_media(self.embed.thumbnail) if self.embed.thumbnail else None,
-            "timestamp": self.embed.timestamp.timestamp() if self.embed.timestamp else None,
-            "type": self.embed.type,
-            "url": self.embed.url,
-            "video": await scrape_media(self.embed.video) if self.embed.video else None,
-        }
+async def scrape_embed(embed: discord.Embed) -> dict:
+    return {
+        "title": embed.title,
+        "description": embed.description,
+        "color": embed.color.value if isinstance(embed.color, discord.Color) else embed.color,
+        "fields": [await scrape_embed_field(field) for field in embed.fields],
+        "footer": {
+            "icon_url": embed.footer.icon_url,
+            "proxy_icon_url": embed.footer.proxy_icon_url,
+            "text": embed.footer.text,
+        },
+        "image": await scrape_media(embed.image) if embed.image else None,
+        "thumbnail": await scrape_media(embed.thumbnail) if embed.thumbnail else None,
+        "timestamp": embed.timestamp.timestamp() if embed.timestamp else None,
+        "type": embed.type,
+        "url": embed.url,
+        "video": await scrape_media(embed.video) if embed.video else None,
+    }
 
 
 async def scrape_media(embed_media) -> dict:
@@ -140,7 +136,7 @@ async def scrape_message(message: discord.Message) -> dict:
         "pinned": message.pinned,
         "tts": message.tts,
         "type": str(message.type),
-        "embeds": [await Embed(embed).export() for embed in message.embeds],
+        "embeds": [await scrape_embed(embed) for embed in message.embeds],
         "attachments": [await scrape_attachment(attatchment) for attatchment in message.attachments],
         "reactions": [await scrape_reactions(reaction) for reaction in message.reactions],
         "mention_everyone": message.mention_everyone,
