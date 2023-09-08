@@ -57,24 +57,20 @@ class EmbedField(Exportable):
         }
 
 
-class Attachment(Exportable):
-    def __init__(self, atatchment: discord.Attachment):
-        self.attachment = atatchment
-
-    async def export(self) -> dict:
-        return {
-            "content_type": self.attachment.content_type,
-            "ephemeral": self.attachment.ephemeral,
-            "description": self.attachment.description,
-            "is_spoiler": self.attachment.is_spoiler(),
-            "filename": self.attachment.filename,
-            "height": self.attachment.height,
-            "id": self.attachment.id,
-            "proxy_url": self.attachment.proxy_url,
-            "size": self.attachment.size,
-            "url": self.attachment.url,
-            "width": self.attachment.width,
-        }
+async def scrape_attachment(attachment: discord.Attachment) -> dict:
+    return {
+        "content_type": attachment.content_type,
+        "ephemeral": attachment.ephemeral,
+        "description": attachment.description,
+        "is_spoiler": attachment.is_spoiler(),
+        "filename": attachment.filename,
+        "height": attachment.height,
+        "id": attachment.id,
+        "proxy_url": attachment.proxy_url,
+        "size": attachment.size,
+        "url": attachment.url,
+        "width": attachment.width,
+    }
 
 
 async def scrape_asset(asset: discord.Asset) -> dict:
@@ -153,7 +149,7 @@ async def scrape_message(message: discord.Message) -> dict:
         "tts": message.tts,
         "type": str(message.type),
         "embeds": [await Embed(embed).export() for embed in message.embeds],
-        "attachments": [await Attachment(attatchment).export() for attatchment in message.attachments],
+        "attachments": [await scrape_attachment(attatchment) for attatchment in message.attachments],
         "reactions": [await scrape_reactions(reaction) for reaction in message.reactions],
         "mention_everyone": message.mention_everyone,
         "mentions": [await scape_user(user) for user in message.mentions],
