@@ -119,25 +119,21 @@ class MessageFlags(Exportable):
         }
 
 
-class User(Exportable):
-    def __init__(self, user: discord.Member | discord.User):
-        self.user = user
-
-    async def export(self) -> dict:
-        return {
-            "id": self.user.id,
-            "name": self.user.name,
-            "discriminator": self.user.discriminator,
-            "display_name": self.user.display_name,
-            "accent_color": self.user.accent_color.value if isinstance(self.user.accent_color, discord.Color) else self.user.accent_color,
-            "avatar": await Asset(self.user.avatar).export(),
-            "color": self.user.color.value if isinstance(self.user.color, discord.Color) else self.user.color,
-            "created_at": self.user.created_at.timestamp(),
-            "default_avatar": await Asset(self.user.default_avatar).export(),
-            "display_avatar": await Asset(self.user.display_avatar).export(),
-            "jump_url": self.user.jump_url,
-            "public_flags": None,  # TODO: public_flags
-        }
+async def scape_user(user: discord.User | discord.Member) -> dict:
+    return {
+        "id": user.id,
+        "name": user.name,
+        "discriminator": user.discriminator,
+        "display_name": user.display_name,
+        "accent_color": user.accent_color.value if isinstance(user.accent_color, discord.Color) else user.accent_color,
+        "avatar": await Asset(user.avatar).export(),
+        "color": user.color.value if isinstance(user.color, discord.Color) else user.color,
+        "created_at": user.created_at.timestamp(),
+        "default_avatar": await Asset(user.default_avatar).export(),
+        "display_avatar": await Asset(user.display_avatar).export(),
+        "jump_url": user.jump_url,
+        "public_flags": None,  # TODO: public_flags
+    }
 
 
 async def scape_sticker(sticker) -> dict:
@@ -162,7 +158,7 @@ async def scrape_message(message: discord.Message) -> dict:
     return {
         "id": message.id,
         "content": message.content,
-        "author": await User(message.author).export(),
+        "author": await scape_user(message.author),
         "created_at": message.created_at.timestamp(),
         "edited_at": message.edited_at.timestamp() if message.edited_at else None,
         "pinned": message.pinned,
@@ -172,7 +168,7 @@ async def scrape_message(message: discord.Message) -> dict:
         "attachments": [await Attachment(attatchment).export() for attatchment in message.attachments],
         "reactions": [await Reactions(reaction).export() for reaction in message.reactions],
         "mention_everyone": message.mention_everyone,
-        "mentions": [await User(user).export() for user in message.mentions],
+        "mentions": [await scape_user(user) for user in message.mentions],
         "webhook_id": message.webhook_id,
         "flags": await MessageFlags(message.flags).export(),
         "stickers": [await scape_sticker(sticker) for sticker in message.stickers],
@@ -199,7 +195,7 @@ async def scrape_channel(channel: discord.TextChannel, limit: int = 100) -> dict
             "jump_url": channel.jump_url,
         }
     async for message in channel.history(limit=limit):
-        data["messages"].append(await scrap_message(message))
+        data["messages"].append(await scrape_message(message))
 
     return data
 
