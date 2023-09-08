@@ -161,62 +161,49 @@ class Component(Exportable):
         ...  # TODO
 
 
-class Message(Exportable):
-    def __init__(self, message: discord.Message):
-        self.message = message
+async def scrap_message(message: discord.Message) -> dict:
+    # TODO: channel mentions, role_mentions, activity, application, reference, interaction, threads
+    return {
+        "id": message.id,
+        "content": message.content,
+        "author": await User(message.author).export(),
+        "created_at": message.created_at.timestamp(),
+        "edited_at": message.edited_at.timestamp() if message.edited_at else None,
+        "pinned": message.pinned,
+        "tts": message.tts,
+        "type": str(message.type),
+        "embeds": [await Embed(embed).export() for embed in message.embeds],
+        "attachments": [await Attachment(attatchment).export() for attatchment in message.attachments],
+        "reactions": [await Reactions(reaction).export() for reaction in message.reactions],
+        "mention_everyone": message.mention_everyone,
+        "mentions": [await User(user).export() for user in message.mentions],
+        "webhook_id": message.webhook_id,
+        "flags": await MessageFlags(message.flags).export(),
+        "stickers": [await Sticker(sticker).export() for sticker in message.stickers],
+        "clean_content": message.clean_content,
+        "is_system": message.is_system(),
+        "system_content": message.system_content,
+        "components": [await Component(component).export() for component in message.components],
+    }
 
-    async def export(self) -> dict:
-        # TODO: channel mentions, role_mentions, activity, application, reference, interaction, threads
-        return {
-            "id": self.message.id,
-            "content": self.message.content,
-            "author": await User(self.message.author).export(),
-            "created_at": self.message.created_at.timestamp(),
-            "edited_at": self.message.edited_at.timestamp() if self.message.edited_at else None,
-            "pinned": self.message.pinned,
-            "tts": self.message.tts,
-            "type": str(self.message.type),
-            "embeds": [await Embed(embed).export() for embed in self.message.embeds],
-            "attachments": [await Attachment(attatchment).export() for attatchment in self.message.attachments],
-            "reactions": [await Reactions(reaction).export() for reaction in self.message.reactions],
-            "mention_everyone": self.message.mention_everyone,
-            "mentions": [await User(user).export() for user in self.message.mentions],
-            "webhook_id": self.message.webhook_id,
-            "flags": await MessageFlags(self.message.flags).export(),
-            "stickers": [await Sticker(sticker).export() for sticker in self.message.stickers],
-            "clean_content": self.message.clean_content,
-            "is_system": self.message.is_system(),
-            "system_content": self.message.system_content,
-            "components": [await Component(component).export() for component in self.message.components],
+
+async def scrap_channel(channel: discord.TextChannel, limit: int = 100) -> dict:
+    data = {
+            "id": channel.id,
+            "name": channel.name,
+            "messages": [],
+            "topic": channel.topic,
+            "category_id": channel.category.id,
+            "created_at": channel.created_at.timestamp(),
+            "guild_id": channel.guild.id,
+            "nsfw": channel.is_nsfw(),
+            "slowmode_delay": channel.slowmode_delay,
+            "type": str(channel.type),
+            "position": channel.position,
+            "jump_url": channel.jump_url,
         }
-
-
-class Channel(Exportable):
-    def __init__(self, channel: discord.TextChannel, messages: list[Message]):
-        self.channel = channel
-        self.messages = messages
-
-    async def export(self) -> dict:
-        # TODO: permissions
-        return {
-            "id": self.channel.id,
-            "name": self.channel.name,
-            "messages": [await message.export() for message in self.messages],
-            "topic": self.channel.topic,
-            "category_id": self.channel.category.id,
-            "created_at": self.channel.created_at.timestamp(),
-            "guild_id": self.channel.guild.id,
-            "nsfw": self.channel.is_nsfw(),
-            "slowmode_delay": self.channel.slowmode_delay,
-            "type": str(self.channel.type),
-            "position": self.channel.position,
-            "jump_url": self.channel.jump_url,
-        }
-
-
-async def scrap_channel(channel: discord.TextChannel, limit: int = 100) -> Channel:
-    messages = []
     async for message in channel.history(limit=limit):
-        messages.append(Message(message))
-    return Channel(channel, messages)
+        data["messages"].append(await scrap_message(message))
+
+    return data
 
