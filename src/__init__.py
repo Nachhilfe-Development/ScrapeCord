@@ -17,7 +17,7 @@ class Embed(Exportable):
             "title": self.embed.title,
             "description": self.embed.description,
             "color": self.embed.color.value if isinstance(self.embed.color, discord.Color) else self.embed.color,
-            "fields": [await EmbedField(field).export() for field in self.embed.fields],
+            "fields": [await scrape_embed_field(field) for field in self.embed.fields],
             "footer": {
                 "icon_url": self.embed.footer.icon_url,
                 "proxy_icon_url": self.embed.footer.proxy_icon_url,
@@ -45,16 +45,12 @@ class EmbedMedia(Exportable):
         }
 
 
-class EmbedField(Exportable):
-    def __init__(self, field: discord.EmbedField):
-        self.field = field
-
-    async def export(self) -> dict:
-        return {
-            "name": self.field.name,
-            "value": self.field.value,
-            "inline": self.field.inline,
-        }
+async def scrape_embed_field(field: discord.EmbedField) -> dict:
+    return {
+        "name": field.name,
+        "value": field.value,
+        "inline": field.inline,
+    }
 
 
 async def scrape_attachment(attachment: discord.Attachment) -> dict:
@@ -182,4 +178,3 @@ async def scrape_channel(channel: discord.TextChannel, limit: int = 100) -> dict
         data["messages"].append(await scrape_message(message))
 
     return data
-
