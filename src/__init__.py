@@ -140,17 +140,13 @@ class User(Exportable):
         }
 
 
-class Sticker(Exportable):
-    def __init__(self, sticker: discord.StickerItem):
-        self.sticker = sticker
-
-    async def export(self) -> dict:
-        return {
-            "format": str(self.sticker.format),
-            "id": self.sticker.id,
-            "name": self.sticker.name,
-            "url": self.sticker.url
-        }
+async def scape_sticker(sticker) -> dict:
+    return {
+        "format": str(sticker.format),
+        "id": sticker.id,
+        "name": sticker.name,
+        "url": sticker.url
+    }
 
 
 class Component(Exportable):
@@ -161,7 +157,7 @@ class Component(Exportable):
         ...  # TODO
 
 
-async def scrap_message(message: discord.Message) -> dict:
+async def scrape_message(message: discord.Message) -> dict:
     # TODO: channel mentions, role_mentions, activity, application, reference, interaction, threads
     return {
         "id": message.id,
@@ -179,7 +175,7 @@ async def scrap_message(message: discord.Message) -> dict:
         "mentions": [await User(user).export() for user in message.mentions],
         "webhook_id": message.webhook_id,
         "flags": await MessageFlags(message.flags).export(),
-        "stickers": [await Sticker(sticker).export() for sticker in message.stickers],
+        "stickers": [await scape_sticker(sticker) for sticker in message.stickers],
         "clean_content": message.clean_content,
         "is_system": message.is_system(),
         "system_content": message.system_content,
@@ -187,7 +183,7 @@ async def scrap_message(message: discord.Message) -> dict:
     }
 
 
-async def scrap_channel(channel: discord.TextChannel, limit: int = 100) -> dict:
+async def scrape_channel(channel: discord.TextChannel, limit: int = 100) -> dict:
     data = {
             "id": channel.id,
             "name": channel.name,
