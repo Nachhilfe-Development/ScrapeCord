@@ -1,11 +1,4 @@
-from abc import ABC, abstractmethod
 import discord
-
-
-class Exportable(ABC):
-    @abstractmethod
-    async def export(self) -> dict:
-        ...
 
 
 async def scrape_embed(embed: discord.Embed) -> dict:
@@ -117,12 +110,8 @@ async def scape_sticker(sticker) -> dict:
     }
 
 
-class Component(Exportable):
-    def __init__(self, component: discord.Component):
-        self.component = component
-
-    async def export(self) -> dict:
-        ...  # TODO
+async def scrape_component(component: discord.Component) -> dict:
+    ...  # TODO
 
 
 async def scrape_message(message: discord.Message) -> dict:
@@ -147,7 +136,7 @@ async def scrape_message(message: discord.Message) -> dict:
         "clean_content": message.clean_content,
         "is_system": message.is_system(),
         "system_content": message.system_content,
-        "components": [await Component(component).export() for component in message.components],
+        "components": [await scrape_component(component) for component in message.components],
     }
 
 
