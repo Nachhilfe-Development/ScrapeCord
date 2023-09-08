@@ -12,16 +12,16 @@ async def scrape_embed(embed: discord.Embed) -> dict:
             "proxy_icon_url": embed.footer.proxy_icon_url,
             "text": embed.footer.text,
         },
-        "image": await scrape_media(embed.image) if embed.image else None,
-        "thumbnail": await scrape_media(embed.thumbnail) if embed.thumbnail else None,
+        "image": await scrape_embed_media(embed.image) if embed.image else None,
+        "thumbnail": await scrape_embed_media(embed.thumbnail) if embed.thumbnail else None,
         "timestamp": embed.timestamp.timestamp() if embed.timestamp else None,
         "type": embed.type,
         "url": embed.url,
-        "video": await scrape_media(embed.video) if embed.video else None,
+        "video": await scrape_embed_media(embed.video) if embed.video else None,
     }
 
 
-async def scrape_media(embed_media) -> dict:
+async def scrape_embed_media(embed_media) -> dict:
     return {
         "height": embed_media.height,
         "proxy_url": embed_media.proxy_url,
