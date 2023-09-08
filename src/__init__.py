@@ -100,23 +100,19 @@ class Reactions(Exportable):
         }
 
 
-class MessageFlags(Exportable):
-    def __init__(self, message_flags: discord.MessageFlags):
-        self.message_flags = message_flags
-
-    async def export(self) -> dict:
-        return {
-            "crossposted": self.message_flags.crossposted,
-            "is_crosspost": self.message_flags.is_crossposted,
-            "supress_embeds": self.message_flags.suppress_embeds,
-            "source_message_deleted": self.message_flags.source_message_deleted,
-            "urgent": self.message_flags.urgent,
-            "has_thread": self.message_flags.has_thread,
-            "ephemeral": self.message_flags.ephemeral,
-            "loading": self.message_flags.loading,
-            "failed_to_mention_some_roles_in_thread": self.message_flags.failed_to_mention_some_roles_in_thread,
-            "suppress_notifications": self.message_flags.suppress_notifications,
-        }
+async def scrape_message_flags(message_flags: discord.MessageFlags) -> dict:
+    return {
+        "crossposted": message_flags.crossposted,
+        "is_crosspost": message_flags.is_crossposted,
+        "supress_embeds": message_flags.suppress_embeds,
+        "source_message_deleted": message_flags.source_message_deleted,
+        "urgent": message_flags.urgent,
+        "has_thread": message_flags.has_thread,
+        "ephemeral": message_flags.ephemeral,
+        "loading": message_flags.loading,
+        "failed_to_mention_some_roles_in_thread": message_flags.failed_to_mention_some_roles_in_thread,
+        "suppress_notifications": message_flags.suppress_notifications,
+    }
 
 
 async def scape_user(user: discord.User | discord.Member) -> dict:
@@ -170,7 +166,7 @@ async def scrape_message(message: discord.Message) -> dict:
         "mention_everyone": message.mention_everyone,
         "mentions": [await scape_user(user) for user in message.mentions],
         "webhook_id": message.webhook_id,
-        "flags": await MessageFlags(message.flags).export(),
+        "flags": await scrape_message_flags(message.flags),
         "stickers": [await scape_sticker(sticker) for sticker in message.stickers],
         "clean_content": message.clean_content,
         "is_system": message.is_system(),
