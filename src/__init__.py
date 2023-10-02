@@ -3,20 +3,20 @@ import discord
 
 async def scrape_embed(embed: discord.Embed) -> dict:
     return {
-        "title": embed.title,
-        "description": embed.description,
-        "color": embed.color.value if isinstance(embed.color, discord.Color) else embed.color,
+        "title": embed.title if embed.title else None,
+        "description": embed.description if embed.description else None,
+        "color": embed.color.value if isinstance(embed.color, discord.Color) and embed.color else None,
         "fields": [await scrape_embed_field(field) for field in embed.fields],
         "footer": {
-            "icon_url": embed.footer.icon_url,
-            "proxy_icon_url": embed.footer.proxy_icon_url,
-            "text": embed.footer.text,
+            "icon_url": embed.footer.icon_url if embed.footer.icon_url != discord.Embed.Empty else None,
+            "proxy_icon_url": embed.footer.proxy_icon_url if embed.footer.proxy_icon_url else None,
+            "text": embed.footer.text if embed.footer.text else None,
         },
         "image": await scrape_embed_media(embed.image) if embed.image else None,
         "thumbnail": await scrape_embed_media(embed.thumbnail) if embed.thumbnail else None,
         "timestamp": embed.timestamp.timestamp() if embed.timestamp else None,
         "type": embed.type,
-        "url": embed.url,
+        "url": embed.url if embed.url else None,
         "video": await scrape_embed_media(embed.video) if embed.video else None,
     }
 
