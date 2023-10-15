@@ -148,6 +148,16 @@ async def scrape_component(component: discord.Component) -> dict:
         raise TypeError(f"Unknown component type: {type(component)}")
 
 
+async def scrape_message_reference(message_reference: discord.MessageReference) -> dict:
+    return {
+        "channel_id": message_reference.channel_id,
+        "guild_id": message_reference.guild_id,
+        "message_id": message_reference.message_id,
+        "fail_if_not_exists": message_reference.fail_if_not_exists,
+        "jump_url": message_reference.jump_url,
+    }
+
+
 async def scrape_message(message: discord.Message) -> dict:
     # TODO: channel mentions, role_mentions, activity, application, reference, interaction, threads
     return {
@@ -171,6 +181,7 @@ async def scrape_message(message: discord.Message) -> dict:
         "is_system": message.is_system(),
         "system_content": message.system_content,
         "components": [await scrape_component(component) for component in message.components],
+        "referenced_message": await scrape_message_reference(message.reference) if message.reference else None,
     }
 
 
