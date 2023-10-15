@@ -111,7 +111,32 @@ async def scape_sticker(sticker) -> dict:
 
 
 async def scrape_component(component: discord.Component) -> dict:
-    ...  # TODO
+    if isinstance(component, discord.ActionRow):
+        return {
+            "type": "action_row",
+            "children": [await scrape_component(child) for child in component.children]
+        }
+    elif isinstance(component, discord.Button):
+        return {
+            "type": "button",
+            "custom_id": component.custom_id,
+            "disabled": component.disabled,
+            "emoji": str(component.emoji) if component.emoji else None,  # FIXME: may cause errors because of discord.PartialEmoji
+            "url": component.url,
+            "label": component.label,
+        }
+    elif isinstance(component, discord.SelectMenu):
+        return {
+            "type": "select_menu",
+            "channel_types": [str(channel_type) for channel_type in component.channel_types],  # FIXME: type issue
+            "custom_id": component.custom_id,
+            "min_values": component.min_values,
+            "max_values": component.max_values,
+            "options": [],  # TODO: options
+            "disabled": component.disabled,
+        }
+    else:
+        raise TypeError(f"Unknown component type: {type(component)}")
 
 
 async def scrape_message(message: discord.Message) -> dict:

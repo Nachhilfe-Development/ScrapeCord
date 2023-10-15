@@ -66,7 +66,28 @@ TODO
 TODO
 
 ## Component Keys
-TODO
+- `type`: component type (`action_row`, `button`, `select_menu`)
+
+### Action Row Keys
+- `children`: array of components (see Component Keys)
+
+### Button Keys
+- `custom_id`: custom id or null
+- `disabled`: if disabled
+- `emoji`: emoji (see Emoji Keys)
+- `url`: url or null
+- `label`: label or null
+
+### Select Menu Keys
+- `custom_id`: custom id or null
+- `disabled`: if disabled
+- `channel_types`: TODO
+- `max_values`: max values (int)
+- `min_values`: min values (int)
+- `options`: TODO
 
 ## Asset Keys
+TODO
+
+## Emoji Keys
 TODO
