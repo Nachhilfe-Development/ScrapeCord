@@ -57,7 +57,9 @@ TODO
 TODO
 
 ## Reaction Keys
-TODO
+- `count`: reaction count
+- `me`: if user/bot reacted
+- `emoji`: emoji (see Emoji Keys)
 
 ## Message Flags
 All Booleans
