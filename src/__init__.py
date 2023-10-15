@@ -110,6 +110,15 @@ async def scape_sticker(sticker: discord.StickerItem) -> dict:
     }
 
 
+def scrape_select_option(select_option: discord.SelectOption) -> dict:
+    return {
+        "label": select_option.label,
+        "value": select_option.value,
+        "description": select_option.description,
+        "default": select_option.default,
+    }
+
+
 async def scrape_component(component: discord.Component) -> dict:
     if isinstance(component, discord.ActionRow):
         return {
@@ -132,7 +141,7 @@ async def scrape_component(component: discord.Component) -> dict:
             "custom_id": component.custom_id,
             "min_values": component.min_values,
             "max_values": component.max_values,
-            "options": [],  # TODO: options
+            "options": [scrape_select_option(option) for option in component.options],  # TODO: options
             "disabled": component.disabled,
         }
     else:
