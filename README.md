@@ -60,7 +60,17 @@ TODO
 TODO
 
 ## Message Flags
-TODO
+All Booleans
+- `crossposted`:  if the message is the original crossposted message
+- `is_crosspost`:  if the message was crossposted from another channel
+- `suppress_embeds`:  if the message's embeds have been suppressed
+- `source_message_deleted`:  if the source message for this crosspost has been deleted
+- `urgent`: if message source is urgent (discord system or discord Trust and Safety)
+- `has_thread`: if message is associated with a thread
+- `ephemeral`: if message is ephemeral
+- `loading`: if usersees a 'thinking' state
+- `failed_to_mention_some_roles_in_thread`: if some roles are failed to mention in a thread 
+- `suppress_notifications`: if the source message does not trigger push and desktop notifications
 
 ## Sticker Keys
 TODO
