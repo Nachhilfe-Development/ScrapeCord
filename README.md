@@ -112,7 +112,8 @@ All Booleans
 - `options`: TODO
 
 ## Asset Keys
-TODO
+- `key`: asset key -> identifier
+- `url`: asset url
 
 ## Emoji Keys
 TODO
