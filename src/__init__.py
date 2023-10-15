@@ -159,7 +159,7 @@ async def scrape_message_reference(message_reference: discord.MessageReference) 
 
 
 async def scrape_message(message: discord.Message) -> dict:
-    # TODO: channel mentions, role_mentions, activity, application, reference, interaction, threads
+    # TODO: channel mentions, role_mentions, activity, application, interaction, threads
     return {
         "id": message.id,
         "content": message.content,
