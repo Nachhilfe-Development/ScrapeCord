@@ -75,7 +75,10 @@ All Booleans
 - `suppress_notifications`: if the source message does not trigger push and desktop notifications
 
 ## Sticker Keys
-TODO
+- `format`: the format for the sticker's image
+- `id`: the id of the sticker (int)
+- `name`: the name of the sticker (str)
+- `url`: the url of the sticker's image
 
 ## Component Keys
 - `type`: component type (`action_row`, `button`, `select_menu`)

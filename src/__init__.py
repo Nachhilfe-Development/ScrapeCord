@@ -101,7 +101,7 @@ async def scape_user(user: discord.User | discord.Member) -> dict:
     }
 
 
-async def scape_sticker(sticker) -> dict:
+async def scape_sticker(sticker: discord.StickerItem) -> dict:
     return {
         "format": str(sticker.format),
         "id": sticker.id,
