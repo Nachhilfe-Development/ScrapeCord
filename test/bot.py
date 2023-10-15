@@ -4,7 +4,7 @@ import json
 import discord
 from discord.ext import commands
 
-import src as scrape_cord
+from src import scraper
 
 
 bot = commands.Bot()
@@ -22,7 +22,7 @@ async def print_output(ctx: discord.ApplicationContext, limit: int = 10, channel
 
     await ctx.respond(f"Printing last {limit} messages from {channel.mention}", ephemeral=True)
 
-    data = await scrape_cord.scrape_channel(channel, limit)
+    data = await scraper.scrape_channel(channel, limit)
     print(json.dumps(data, indent=4, sort_keys=True))
 
 
