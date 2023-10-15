@@ -51,7 +51,33 @@
 - `public_flags`: null -> TODO
 
 ## Embed Keys
-TODO
+- `title`: title
+- `description`: description or null
+- `color`: color (integer)
+- `fields`: array of fields (see Embed Field Keys)
+- `footer`: footer (see Embed Footer Keys)
+- `image`: image (see Embed Media Keys)
+- `thumbnail`: thumbnail (see Embed Media Keys)
+- `timestamp`: unix timestamp or null
+- `type`: embed type -> "rich", "image", "video", "gifv", "article", "link", "auto_moderation_message"
+- `url`: url or null
+- `video`: video (see Embed Media Keys)
+
+### Embed Field Keys
+- `name`: name
+- `value`: value
+- `inline`: if inline
+
+### Embed Footer Keys
+- `icon_url`: icon url or null
+- `proxy_icon_url`: proxy icon url or null
+- `text`: text or null
+
+### Embed Media Keys
+- `height`: height (int)
+- `proxy_url`: proxy url
+- `url`: url
+- `width`: width (int)
 
 ## Attachment Keys
 - `content_type`: media type https://en.wikipedia.org/wiki/Media_type
