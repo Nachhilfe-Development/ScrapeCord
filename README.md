@@ -13,12 +13,12 @@
 - `slowmode_delay`: slow-mode delay
 - `category_id`: category id
 - `created_at`: created at unix timestamp
+- `users`: Map\[UserID, User Keys\] (see User Keys)
 
 ## Message Keys
 - `id`: message id
 - `content`: message content
-- `author`: message author (see User Keys)
-- `created_at`: created at unix timestamp
+- `author`: message author id
 - `edited_at`: edited at unix timestamp or null
 - `pinned`: is pinned
 - `tts`: is tts
@@ -27,7 +27,7 @@
 - `attachments`: array of attachments (see Attachment Keys)
 - `reactions`: array of reactions (see Reaction Keys)
 - `mentions_everyone`: if message mentions everyone
-- `mentions`: array of mentions (see User Keys)
+- `mentions`: array of mentioned user ids
 - `webhook_id`: webhook id or null
 - `flags`: message flags (see Message Flags)
 - `stickers`: array of stickers (see Sticker Keys)
