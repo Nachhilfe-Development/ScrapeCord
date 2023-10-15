@@ -141,7 +141,7 @@ async def scrape_component(component: discord.Component) -> dict:
             "custom_id": component.custom_id,
             "min_values": component.min_values,
             "max_values": component.max_values,
-            "options": [scrape_select_option(option) for option in component.options],  # TODO: options
+            "options": [scrape_select_option(option) for option in component.options],
             "disabled": component.disabled,
         }
     else:
