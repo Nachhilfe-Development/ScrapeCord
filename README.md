@@ -54,7 +54,17 @@
 TODO
 
 ## Attachment Keys
-TODO
+- `content_type`: media type https://en.wikipedia.org/wiki/Media_type
+- `ephemeral`: if ephemeral
+- `description`: attachments description
+- `is_spoiler`: if the attachment contains spoiler
+- `filename`: filename
+- `height`: height (int)
+- `id`: attachment id (int)
+- `proxy_url`: proxy url
+- `size`: size in bytes (int)
+- `url`: url
+- `width`: width (int)
 
 ## Reaction Keys
 - `count`: reaction count
