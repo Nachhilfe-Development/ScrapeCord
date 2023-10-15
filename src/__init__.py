@@ -160,7 +160,7 @@ async def scrape_message(message: discord.Message) -> dict:
         "tts": message.tts,
         "type": str(message.type),
         "embeds": [await scrape_embed(embed) for embed in message.embeds],
-        "attachments": [await scrape_attachment(attatchment) for attatchment in message.attachments],
+        "attachments": [await scrape_attachment(attachment) for attachment in message.attachments],
         "reactions": [await scrape_reactions(reaction) for reaction in message.reactions],
         "mention_everyone": message.mention_everyone,
         "mentions": [await scape_user(user) for user in message.mentions],
