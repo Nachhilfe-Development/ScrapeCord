@@ -2,7 +2,7 @@
 
 ## Root Keys
 - `id`: channel id
-- `name` channel namee
+- `name` channel name
 - `topic`: channel topic
 - `type`: channel type
 - `guild_id`: guild id
@@ -10,7 +10,7 @@
 - `messages`: array of messages (see Message Keys)
 - `nsfw`: is nsfw
 - `jump_url`: jump url
-- `slowmode_delay`: slowmode delay
+- `slowmode_delay`: slow-mode delay
 - `category_id`: category id
 - `created_at`: created at unix timestamp
 
@@ -31,7 +31,7 @@
 - `webhook_id`: webhook id or null
 - `flags`: message flags (see Message Flags)
 - `stickers`: array of stickers (see Sticker Keys)
-- `clean_content`: message content with mentions removed i guess
+- `clean_content`: message content with mentions removed I guess
 - `is_system`: is system message
 - `system_content`: system message content
 - `components`: array of components (see Component Keys)
@@ -99,14 +99,14 @@
 
 ## Message Flags
 All Booleans
-- `crossposted`:  if the message is the original crossposted message
-- `is_crosspost`:  if the message was crossposted from another channel
+- `crossposted`:  if the message is the original cross-posted message
+- `is_crosspost`:  if the message was cross-posted from another channel
 - `suppress_embeds`:  if the message's embeds have been suppressed
-- `source_message_deleted`:  if the source message for this crosspost has been deleted
+- `source_message_deleted`:  if the source message for this cross post has been deleted
 - `urgent`: if message source is urgent (discord system or discord Trust and Safety)
 - `has_thread`: if message is associated with a thread
 - `ephemeral`: if message is ephemeral
-- `loading`: if usersees a 'thinking' state
+- `loading`: if user sees a 'thinking' state
 - `failed_to_mention_some_roles_in_thread`: if some roles are failed to mention in a thread 
 - `suppress_notifications`: if the source message does not trigger push and desktop notifications
 
@@ -135,7 +135,7 @@ All Booleans
 - `channel_types`: TODO
 - `max_values`: max values (int)
 - `min_values`: min values (int)
-- `options`: arraw of options (see Select Option Keys)
+- `options`: array of options (see Select Option Keys)
 
 #### Select Option Keys
 - `label`: label
