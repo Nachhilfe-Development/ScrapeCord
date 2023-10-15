@@ -35,6 +35,7 @@
 - `is_system`: is system message
 - `system_content`: system message content
 - `components`: array of components (see Component Keys)
+- `referenced_message`: referenced message or null (see Message Reference Keys)
 
 ## User Keys
 - `id`: user id
@@ -149,3 +150,10 @@ All Booleans
 
 ## Emoji Keys
 TODO
+
+## Message Reference Keys
+- `channel_id`: channel id
+- `guild_id`: guild id or null
+- `message_id`: message id or null
+- `fail_if_not_exists`: if fail the message does not exist / could not be found
+- `jump_url`: jump url
