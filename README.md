@@ -135,7 +135,13 @@ All Booleans
 - `channel_types`: TODO
 - `max_values`: max values (int)
 - `min_values`: min values (int)
-- `options`: TODO
+- `options`: arraw of options (see Select Option Keys)
+
+#### Select Option Keys
+- `label`: label
+- `value`: value
+- `description`: description or null
+- `default`: if default
 
 ## Asset Keys
 - `key`: asset key -> identifier
