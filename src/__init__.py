@@ -84,8 +84,9 @@ async def scrape_message_flags(message_flags: discord.MessageFlags) -> dict:
     }
 
 
-async def scape_user(user: discord.User | discord.Member) -> dict:
-    return {
+async def scape_user(user: discord.User | discord.Member, users: dict) -> int:
+    if not user.id in users.keys():
+        users[user.id] = {
         "id": user.id,
         "name": user.name,
         "discriminator": user.discriminator,
@@ -99,6 +100,7 @@ async def scape_user(user: discord.User | discord.Member) -> dict:
         "jump_url": user.jump_url,
         "public_flags": None,  # TODO: public_flags
     }
+    return user.id
 
 
 async def scape_sticker(sticker: discord.StickerItem) -> dict:
@@ -158,12 +160,12 @@ async def scrape_message_reference(message_reference: discord.MessageReference) 
     }
 
 
-async def scrape_message(message: discord.Message) -> dict:
+async def scrape_message(message: discord.Message, users: dict) -> dict:
     # TODO: channel mentions, role_mentions, activity, application, interaction, threads
     return {
         "id": message.id,
         "content": message.content,
-        "author": await scape_user(message.author),
+        "author": await scape_user(message.author, users),
         "created_at": message.created_at.timestamp(),
         "edited_at": message.edited_at.timestamp() if message.edited_at else None,
         "pinned": message.pinned,
@@ -173,7 +175,7 @@ async def scrape_message(message: discord.Message) -> dict:
         "attachments": [await scrape_attachment(attachment) for attachment in message.attachments],
         "reactions": [await scrape_reactions(reaction) for reaction in message.reactions],
         "mention_everyone": message.mention_everyone,
-        "mentions": [await scape_user(user) for user in message.mentions],
+        "mentions": [await scape_user(user, users) for user in message.mentions],
         "webhook_id": message.webhook_id,
         "flags": await scrape_message_flags(message.flags),
         "stickers": [await scape_sticker(sticker) for sticker in message.stickers],
@@ -200,7 +202,9 @@ async def scrape_channel(channel: discord.TextChannel, limit: int = 100) -> dict
             "position": channel.position,
             "jump_url": channel.jump_url,
         }
+    users = {}
     async for message in channel.history(limit=limit):
-        data["messages"].append(await scrape_message(message))
+        data["messages"].append(await scrape_message(message, users))
 
+    data["users"] = users
     return data
