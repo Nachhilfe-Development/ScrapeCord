@@ -135,6 +135,7 @@ async def scrape_component(component: discord.Component) -> dict:
             "emoji": str(component.emoji) if component.emoji else None,  # FIXME: may cause errors because of discord.PartialEmoji
             "url": component.url,
             "label": component.label,
+            "style": component.style.value
         }
     elif isinstance(component, discord.SelectMenu):
         return {
