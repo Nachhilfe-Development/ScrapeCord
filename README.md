@@ -129,6 +129,13 @@ All Booleans
 - `emoji`: emoji (see Emoji Keys)
 - `url`: url or null
 - `label`: label or null
+- `style`: See Button Style 
+#### Button Style
+- primary = 1
+- secondary = 2
+- success = 3
+- danger = 4
+- link = 5
 
 ### Select Menu Keys
 - `custom_id`: custom id or null
