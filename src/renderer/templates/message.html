@@ -1,0 +1,38 @@
+{% from 'embed.html' import Embed %}
+{% from 'ui-component.html' import UiComponents %}
+
+{% macro Message(message, users, utils) %}
+<div class="message_container" id="message-{{ message.id }}">
+    <span onclick="document.getElementById('message-id-{{ message.id }}').classList.toggle('invisible')" class="message_header">
+        {{ users[message.author|string].display_name }}
+        <span id="message-id-{{ message.id }}" class="invisible">({{ message.id }})</span>
+    </span>
+    <span class="message_header">
+        {{ utils.format_timestamp(message.created_at) }}
+    </span>
+    {% if message.edited_at %}
+    <span class="message_header">
+        Edited: {{ utils.format_timestamp(message.edited_at) }}
+    </span>
+    {% endif %}
+    {% if message.referenced_message != None %}
+    <span>
+        <a class="message_reference" href="#message-{{ message.referenced_message.message_id }}">
+            Referenced-Message
+            ({{ message.referenced_message.message_id }})
+        </a>
+    </span>
+    {% endif %}
+    {% if message.content %}
+    <div class="message_content">
+        {{ message.content }}
+    </div>
+    {% endif %}
+    {% for embed in message.embeds %}
+    {{ Embed(embed, utils) }}
+    {% endfor %}
+    {% if message.components %}
+    {{ UiComponents(message.components, utils) }}
+    {% endif %}
+</div>
+{% endmacro %}
