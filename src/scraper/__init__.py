@@ -25,39 +25,39 @@ class Scraper:
                 "jump_url": self.__channel.jump_url,
             }
         async for message in self.__channel.history(limit=self.__limit):
-            data["messages"].append(await self.__scrape_message(message))
+            data["messages"].append(self.__scrape_message(message))
 
         data["users"] = self.__users
         return data
     
-    async def __scrape_message(self, message: discord.Message) -> dict:
+    def __scrape_message(self, message: discord.Message) -> dict:
         # TODO: channel mentions, role_mentions, activity, application, interaction, threads
         return {
             "id": message.id,
             "content": message.content,
-            "author": await Scraper.__scape_user(message.author, self.__users),
+            "author": Scraper.__scape_user(message.author, self.__users),
             "created_at": message.created_at.timestamp(),
             "edited_at": message.edited_at.timestamp() if message.edited_at else None,
             "pinned": message.pinned,
             "tts": message.tts,
             "type": str(message.type),
-            "embeds": [await Scraper.__scrape_embed(embed) for embed in message.embeds],
-            "attachments": [await Scraper.__scrape_attachment(attachment) for attachment in message.attachments],
-            "reactions": [await Scraper.__scrape_reactions(reaction) for reaction in message.reactions],
+            "embeds": [Scraper.__scrape_embed(embed) for embed in message.embeds],
+            "attachments": [Scraper.__scrape_attachment(attachment) for attachment in message.attachments],
+            "reactions": [Scraper.__scrape_reactions(reaction) for reaction in message.reactions],
             "mention_everyone": message.mention_everyone,
-            "mentions": [await Scraper.__scape_user(user, self.__users) for user in message.mentions],
+            "mentions": [Scraper.__scape_user(user, self.__users) for user in message.mentions],
             "webhook_id": message.webhook_id,
-            "flags": await Scraper.__scrape_message_flags(message.flags),
-            "stickers": [await Scraper.__scape_sticker(sticker) for sticker in message.stickers],
+            "flags": Scraper.__scrape_message_flags(message.flags),
+            "stickers": [Scraper.__scape_sticker(sticker) for sticker in message.stickers],
             "clean_content": message.clean_content,
             "is_system": message.is_system(),
             "system_content": message.system_content,
-            "components": [await self.__scrape_component(component) for component in message.components],
-            "referenced_message": await self.__scrape_message_reference(message.reference) if message.reference else None,
+            "components": [self.__scrape_component(component) for component in message.components],
+            "referenced_message": self.__scrape_message_reference(message.reference) if message.reference else None,
         }
     
     @staticmethod
-    async def __scrape_message_reference(message_reference: discord.MessageReference) -> dict:
+    def __scrape_message_reference(message_reference: discord.MessageReference) -> dict:
         return {
             "channel_id": message_reference.channel_id,
             "guild_id": message_reference.guild_id,
@@ -67,11 +67,11 @@ class Scraper:
         }
 
     @staticmethod
-    async def __scrape_component(component: discord.Component) -> dict:
+    def __scrape_component(component: discord.Component) -> dict:
         if isinstance(component, discord.ActionRow):
             return {
                 "type": "action_row",
-                "children": [await Scraper.__scrape_component(child) for child in component.children]
+                "children": [Scraper.__scrape_component(child) for child in component.children]
             }
         elif isinstance(component, discord.Button):
             return {
@@ -106,7 +106,7 @@ class Scraper:
         }
 
     @staticmethod
-    async def __scrape_message_flags(message_flags: discord.MessageFlags) -> dict:
+    def __scrape_message_flags(message_flags: discord.MessageFlags) -> dict:
         return {
             "crossposted": message_flags.crossposted,
             "is_crosspost": message_flags.is_crossposted,
@@ -121,27 +121,27 @@ class Scraper:
         }
     
     @staticmethod
-    async def __scrape_embed(embed: discord.Embed) -> dict:
+    def __scrape_embed(embed: discord.Embed) -> dict:
         return {
             "title": embed.title if embed.title else None,
             "description": embed.description if embed.description else None,
             "color": embed.color.value if isinstance(embed.color, discord.Color) and embed.color else None,
-            "fields": [await Scraper.__scrape_embed_field(field) for field in embed.fields],
+            "fields": [Scraper.__scrape_embed_field(field) for field in embed.fields],
             "footer": {
                 "icon_url": embed.footer.icon_url if embed.footer.icon_url != discord.Embed.Empty else None,
                 "proxy_icon_url": embed.footer.proxy_icon_url if embed.footer.proxy_icon_url else None,
                 "text": embed.footer.text if embed.footer.text else None,
             },
-            "image": await Scraper.__scrape_embed_media(embed.image) if embed.image else None,
-            "thumbnail": await Scraper.__scrape_embed_media(embed.thumbnail) if embed.thumbnail else None,
+            "image": Scraper.__scrape_embed_media(embed.image) if embed.image else None,
+            "thumbnail": Scraper.__scrape_embed_media(embed.thumbnail) if embed.thumbnail else None,
             "timestamp": embed.timestamp.timestamp() if embed.timestamp else None,
             "type": embed.type,
             "url": embed.url if embed.url else None,
-            "video": await Scraper.__scrape_embed_media(embed.video) if embed.video else None,
+            "video": Scraper.__scrape_embed_media(embed.video) if embed.video else None,
         }
     
     @staticmethod
-    async def __scrape_embed_media(embed_media) -> dict:
+    def __scrape_embed_media(embed_media) -> dict:
         return {
             "height": embed_media.height,
             "proxy_url": embed_media.proxy_url,
@@ -150,14 +150,14 @@ class Scraper:
         }
 
     @staticmethod
-    async def __scrape_embed_field(field: discord.EmbedField) -> dict:
+    def __scrape_embed_field(field: discord.EmbedField) -> dict:
         return {
             "name": field.name,
             "value": field.value,
             "inline": field.inline,
         }
     
-    async def __scape_user(self, user: discord.User | discord.Member) -> int:
+    def __scape_user(self, user: discord.User | discord.Member) -> int:
         if not user.id in self.__users.keys():
             self.__users[user.id] = {
             "id": user.id,
@@ -165,18 +165,18 @@ class Scraper:
             "discriminator": user.discriminator,
             "display_name": user.display_name,
             "accent_color": user.accent_color.value if isinstance(user.accent_color, discord.Color) else user.accent_color,
-            "avatar": await Scraper.__scrape_asset(user.avatar),
+            "avatar": Scraper.__scrape_asset(user.avatar),
             "color": user.color.value if isinstance(user.color, discord.Color) else user.color,
             "created_at": user.created_at.timestamp(),
-            "default_avatar": await Scraper.__scrape_asset(user.default_avatar),
-            "display_avatar": await Scraper.__scrape_asset(user.display_avatar),
+            "default_avatar": Scraper.__scrape_asset(user.default_avatar),
+            "display_avatar": Scraper.__scrape_asset(user.display_avatar),
             "jump_url": user.jump_url,
             "public_flags": None,  # TODO: public_flags
         }
         return user.id
 
     @staticmethod
-    async def __scrape_attachment(attachment: discord.Attachment) -> dict:
+    def __scrape_attachment(attachment: discord.Attachment) -> dict:
         return {
             "content_type": attachment.content_type,
             "ephemeral": attachment.ephemeral,
@@ -192,7 +192,7 @@ class Scraper:
         }
     
     @staticmethod
-    async def __scape_sticker(sticker: discord.StickerItem) -> dict:
+    def __scape_sticker(sticker: discord.StickerItem) -> dict:
         return {
             "format": str(sticker.format),
             "id": sticker.id,
@@ -201,7 +201,7 @@ class Scraper:
         }
     
     @staticmethod
-    async def __scrape_reactions(reaction: discord.Reaction) -> dict:
+    def __scrape_reactions(reaction: discord.Reaction) -> dict:
         return {
             "count": reaction.count,
             "emoji": str(reaction.emoji),  # TODO: Union[Emoji, PartialEmoji, str]
@@ -209,7 +209,7 @@ class Scraper:
         }
     
     @staticmethod
-    async def __scrape_asset(asset: discord.Asset) -> dict:
+    def __scrape_asset(asset: discord.Asset) -> dict:
         return {
             "key": asset.key,
             "url": asset.url
