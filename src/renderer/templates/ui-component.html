@@ -1,0 +1,40 @@
+{% macro UiComponents(components, utils) %}
+{{ ActionRow(utils.filter_ui_components(components, False)) }}
+{% for action_row in utils.filter_ui_components(components, True) %}
+{{ ActionRow(action_row.children, utils) }}
+{% endfor %}
+{% endmacro %}
+
+{% macro ActionRow(children, utils) %}
+<div class="ui_action_row">
+    {% for child in children %}
+    {% if child.type == "button" %}
+    {{ Button(child, utils) }}
+    {% elif child.type == "select_menu" %}
+    {{ SelectMenu(child, utils) }}
+    {% endif %}
+    {% endfor %}
+</div>
+{% endmacro %}
+
+{% macro Button(button, utils) %}
+<div class="ui_button {{ utils.convert_button_type_to_css_class(button.style) }}">
+    {% if button.url == None %}
+    {{ button.label }}
+    {% else %}
+    <a href="{{ button }}">{{ button.label }}</a>
+    {% endif %}
+    {% if button.style == 5 %}
+    <svg class="launchIcon-2KvOPN" aria-hidden="true" role="img" width="16" height="16" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M10 5V3H5.375C4.06519 3 3 4.06519 3 5.375V18.625C3 19.936 4.06519 21 5.375 21H18.625C19.936 21 21 19.936 21 18.625V14H19V19H5V5H10Z"></path>
+        <path fill="currentColor" d="M21 2.99902H14V4.99902H17.586L9.29297 13.292L10.707 14.706L19 6.41302V9.99902H21V2.99902Z"></path>
+    </svg>
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% macro SelectMenu(select_menu, utils) %}
+<div>
+
+</div>
+{% endmacro %}

@@ -1,0 +1,142 @@
+:root {
+    --normal-text-size: 1em;
+}
+
+body {
+    margin: 0;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+a {
+    color: white;
+}
+
+.channel_container {
+    background-color: #585858;
+    padding: 1em;
+}
+
+.channel_name {
+    padding: 0.5em;
+    font-weight: bold;
+    border-radius: 0.5em;
+    background: #484848
+}
+
+.message_container {
+    padding: 0.3em;
+    margin: 0.5em;
+    border-radius: 0.5em;
+    background: #484848
+}
+
+.message_header {
+    padding-left: 0.3em;
+    padding-right: 0.3em;
+    margin-right: 0.23em;
+    border-radius: 0.3em;
+    background: #3b3a3a;
+    font-size: var(--normal-text-size)
+}
+
+.message_content {
+    margin: 0.5em;
+    line-break: anywhere;
+    font-size: var(--normal-text-size);
+}
+
+.embed {
+    padding: 0.3em;
+    padding-left: 1em;
+    border-radius: 0.5em;
+    background: #3b3a3a;
+    font-size: var(--normal-text-size);
+}
+
+.embed_holder {
+    padding-left: 0.3em;
+    border-radius: 0.5em;
+    margin: 0.5em
+}
+
+.embed_field_container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.embed_field {
+    flex-basis: 20%;
+    margin: 0.3em;
+    min-width: 20em;
+}
+
+.flex_row_break {
+    height: 0;
+    flex-basis: 100%;
+}
+
+.ui_action_row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.ui_button {
+    margin: 0.3em;
+    padding: 0.5em;
+    border-radius: 0.5em;
+    transition: 0.3s;
+    font-size: var(--normal-text-size);
+}
+
+.ui_button:hover {
+    color: rgb(156, 156, 156);
+}
+
+.ui_button_primary {
+    background-color: #5865f2;
+}
+
+.ui_button_primary:hover {
+    background-color: #3d4263
+}
+
+.ui_button_secondary {
+    background-color: #4f545c;
+}
+
+.ui_button_secondary:hover {
+    background-color: #3b3e45;
+}
+
+.ui_button_success {
+    background-color: #43b581;
+}
+
+.ui_button_success:hover {
+    background-color: #39524c;
+}
+
+.ui_button_danger {
+    background-color: #f04747;
+}
+
+.ui_button_danger:hover {
+    background-color: #5b3c41;
+}
+
+.ui_button_link {
+    background-color: #4f545c;
+}
+
+.ui_button_link:hover {
+    background-color: #3b3e45;
+}
+
+.message_reference {
+    color: #a0b6df
+}
+
+.invisible {
+    display: none;
+}
