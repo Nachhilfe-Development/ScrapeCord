@@ -35,7 +35,7 @@ class Scraper:
         return {
             "id": message.id,
             "content": message.content,
-            "author": Scraper.__scape_user(message.author, self.__users),
+            "author": self.__scape_user(message.author),
             "created_at": message.created_at.timestamp(),
             "edited_at": message.edited_at.timestamp() if message.edited_at else None,
             "pinned": message.pinned,
@@ -45,7 +45,7 @@ class Scraper:
             "attachments": [Scraper.__scrape_attachment(attachment) for attachment in message.attachments],
             "reactions": [Scraper.__scrape_reactions(reaction) for reaction in message.reactions],
             "mention_everyone": message.mention_everyone,
-            "mentions": [Scraper.__scape_user(user, self.__users) for user in message.mentions],
+            "mentions": [self.__scape_user(user) for user in message.mentions],
             "webhook_id": message.webhook_id,
             "flags": Scraper.__scrape_message_flags(message.flags),
             "stickers": [Scraper.__scape_sticker(sticker) for sticker in message.stickers],
