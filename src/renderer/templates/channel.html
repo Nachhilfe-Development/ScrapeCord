@@ -1,0 +1,15 @@
+{% from 'message.html' import Message %}
+{% extends "base.html" %}
+
+{% block content %}
+<div class="channel_container">
+    <h1 onclick="document.getElementById('channel-id-details').classList.toggle('invisible')" class="channel_name">
+        {{ name }}
+        <span id="channel-id-details" class="invisible">({{ id }})</span>
+    </h1>
+
+    {% for message in messages|sort(attribute="created_at") %}
+    {{ Message(message, users, utils) }}
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% macro Embed(embed, utils) %}
+<div class="embed_holder" style="background: {{ utils.int_color_to_hey(embed.color) }}">
+    <div class="embed">
+        <h3>{{ embed.title }}</h3>
+        <p>{{ embed.description }}</p>
+        {% if embed.fields|length != 0 %}
+        <div class="embed_field_container">
+            {% for field in embed.fields %}
+            <div class="embed_field">
+                <h4>{{ field.name }}</h4>
+                <p>{{ field.value }}</p>
+            </div>
+            {% if field.inline == False %}
+            <div class="flex_row_break"></div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% if embed.footer.text != None %}
+        <span>{{ embed.footer.text }}</span>
+        {% endif %}
+        {% if embed.footer.text != None and embed.timestamp != None %}
+        •
+        {% endif %}
+        {% if embed.timestamp != None %}
+        <span>{{ utils.format_timestamp(embed.timestamp) }}</span>
+        {% endif %}
+    </div>
+</div>
+{% endmacro %}
