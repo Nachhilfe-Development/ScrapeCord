@@ -22,7 +22,8 @@ async def print_output(ctx: discord.ApplicationContext, limit: int = 10, channel
 
     await ctx.respond(f"Printing last {limit} messages from {channel.mention}", ephemeral=True)
 
-    data = await scraper.scrape_channel(channel, limit)
+    scraper = scraper.Scraper(channel, limit)
+    data = await scraper.scrape_channel()
     print(json.dumps(data, indent=4, sort_keys=True))
 
 
