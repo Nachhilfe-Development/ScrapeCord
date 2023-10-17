@@ -14,6 +14,7 @@
 - `category_id`: category id
 - `created_at`: created at unix timestamp
 - `users`: Map\[UserID, User Keys\] (see User Keys)
+- `roles`: Map\[RoleID, Role Keys\] (see Role Keys)
 
 ## Message Keys
 - `id`: message id
@@ -50,6 +51,7 @@
 - `display_avatar`: display avatar (see Asset Keys)
 - `jump_url`: jump url
 - `public_flags`: null -> TODO
+- `roles`: list of role ids that the user has
 
 ## Embed Keys
 - `title`: title
@@ -164,3 +166,13 @@ TODO
 - `message_id`: message id or null
 - `fail_if_not_exists`: if fail the message does not exist / could not be found
 - `jump_url`: jump url
+
+## Role Keys
+- `color`: the color of the role
+- `id`: the role id
+- `name`: the name of the role
+- `position`: the position of the role
+- `mentionable`: if the role can be mentioned by users
+- `hoist`: Indicates if the role will be displayed separately from other members
+- `icon`: the icon (see Asset Keys) or null
+- `unicode_emoji`: the unicode emoji as string or null

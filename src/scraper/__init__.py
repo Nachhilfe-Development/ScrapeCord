@@ -6,9 +6,11 @@ class Scraper:
         self.__channel = channel
         self.__limit = limit
         self.__users: dict
+        self.__roles: dict
         
     async def scrape_channel(self) -> dict:
         self.__users = {}
+        self.__roles = {}
 
         data = {
                 "id": self.__channel.id,
@@ -28,6 +30,7 @@ class Scraper:
             data["messages"].append(self.__scrape_message(message))
 
         data["users"] = self.__users
+        data["roles"] = self.__roles
         return data
     
     def __scrape_message(self, message: discord.Message) -> dict:
@@ -172,8 +175,30 @@ class Scraper:
             "display_avatar": Scraper.__scrape_asset(user.display_avatar),
             "jump_url": user.jump_url,
             "public_flags": None,  # TODO: public_flags
-        }
+            "roles": [],
+            }
+            if isinstance(user, discord.Member):
+                self.__users[user.id]["roles"] = [role.id for role in user.roles]
+                self.__scrape_roles(user.roles)
+        
+        # return user id
         return user.id
+
+    def __scrape_roles(self, roles: list[discord.Role]):
+        for role in roles:
+            if role.id in self.__roles.keys():
+                continue
+            self.__roles[role.id] = {
+                "color": role.color.value if isinstance(role.color, discord.Color) else role.color,
+                "id": role.id,
+                "name": role.name,
+                "position": role.position,
+                "mentionable": role.mentionable,
+                "hoist": role.hoist,
+                "icon": Scraper.__scrape_asset(role.icon) if role.icon else None,
+                "unicode_emoji": role.unicode_emoji,
+            }
+        pass
 
     @staticmethod
     def __scrape_attachment(attachment: discord.Attachment) -> dict:
