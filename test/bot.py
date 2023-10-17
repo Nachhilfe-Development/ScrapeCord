@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 sys.path.append(Path(".").resolve().as_posix())
 
-from src import scraper
+from src.scraper import Scraper
 
 
 bot = commands.Bot()
@@ -26,7 +26,7 @@ async def print_output(ctx: discord.ApplicationContext, limit: int = 10, channel
 
     await ctx.respond(f"Printing last {limit} messages from {channel.mention}", ephemeral=True)
 
-    scraper = scraper.Scraper(channel, limit)
+    scraper = Scraper(channel, limit)
     data = await scraper.scrape_channel()
     print(json.dumps(data, indent=4, sort_keys=True))
 
