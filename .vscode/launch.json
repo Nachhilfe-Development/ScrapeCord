@@ -11,6 +11,14 @@
             "program": "test/render_example/render_example.py",
             "console": "integratedTerminal",
             "justMyCode": true,
+        },
+        {
+            "name": "Test Bot",
+            "type": "python",
+            "request": "launch",
+            "program": "test/bot.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
         }
     ]
 }
