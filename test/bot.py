@@ -28,7 +28,11 @@ async def print_output(ctx: discord.ApplicationContext, limit: int = 10, channel
 
     scraper = Scraper(channel, limit)
     data = await scraper.scrape_channel()
-    print(json.dumps(data, indent=4, sort_keys=True))
+    json_string = json.dumps(data, indent=4, sort_keys=True)
+    print(json_string)
+
+    with open("test/render_example/example.json", "w", encoding="utf-8") as f:
+        f.write(json_string)
 
 
 if __name__ == "__main__":
