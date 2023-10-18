@@ -12,7 +12,7 @@ class Utils:
         return datetime.fromtimestamp(timestamp).strftime("%Y-%m-%d %H:%M:%S")
 
     @staticmethod
-    def int_color_to_hey(color: int | None) -> str:
+    def int_color_to_hex(color: int | None) -> str:
         if not color:
             return "#007BF7"
         return f"#{color:06x}"
@@ -30,6 +30,24 @@ class Utils:
             4: "ui_button_danger",
             5: "ui_button_link",
         }[button_type]
+
+    def get_highest_role_color(self, user: int) -> int:
+        highest_role = self.__get_highest_role(self.__data["users"][str(user)]["roles"])
+        if highest_role is None:
+            return 0xFFFFFF
+        
+        return self.__data["roles"][str(highest_role)]["color"]
+
+    def __get_highest_role(self, roles: list[int]) -> int | None:
+        if len(roles) == 0:
+            return None
+        
+        highest_role = roles[0]
+        for role in roles:
+            if self.__data["roles"][str(role)]["position"] > self.__data["roles"][str(highest_role)]["position"]:
+                highest_role = role
+        return highest_role
+
 
 def render_to_html(data: dict) -> str:
 
