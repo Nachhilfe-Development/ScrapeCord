@@ -19,6 +19,9 @@
 
 {% macro Button(button, utils) %}
 <div class="ui_button {{ utils.convert_button_type_to_css_class(button.style) }}">
+    {% if button.emoji != None %}
+    {{ button.emoji }}
+    {% endif %}
     {% if button.url == None %}
     {{ button.label }}
     {% else %}
