@@ -138,5 +138,21 @@ a {
 }
 
 .invisible {
-    display: none;
+    /*display: none;*/
+    scale: 0;
+}
+
+.popup_container {
+    position: relative;
+}
+
+.popover {
+    position: absolute;
+    top: 100%;
+    border-radius: 0.3em;
+    background-color: #3b3e45;
+    padding: 0.5em;
+    transition-duration: 50ms;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    z-index: 999;
 }
