@@ -3,8 +3,8 @@
 
 {% block content %}
 <div class="channel_container">
-    <div class="popup_container">
-        <h1 class="channel_name" onclick="document.getElementById('channel-id-details').classList.toggle('invisible')">{{ name }}</h1>
+    <div class="popup_container channel_bar">
+        <h1 class="channel_name" onclick="document.getElementById('channel-id-details').classList.toggle('invisible')"><span class="channel_symbol">#</span>{{ name }}</h1>
         <div id="channel-id-details" class="invisible popover">Channel ID: {{ id }}</div>
     </div>
 

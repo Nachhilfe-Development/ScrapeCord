@@ -7,7 +7,7 @@
         <div class="embed_field_container">
             {% for field in embed.fields %}
             <div class="embed_field">
-                <h4>{{ field.name }}</h4>
+                <h4 class="embed_field_title">{{ field.name }}</h4>
                 <p>{{ field.value }}</p>
             </div>
             {% if field.inline == False %}

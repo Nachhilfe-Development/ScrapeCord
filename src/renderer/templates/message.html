@@ -3,36 +3,44 @@
 
 {% macro Message(message, users, utils) %}
 <div class="message_container" id="message-{{ message.id }}">
-    <span onclick="document.getElementById('message-id-{{ message.id }}').classList.toggle('invisible')" class="message_header popup_container" style="color: {{ utils.int_color_to_hex(utils.get_highest_role_color(message.author)) }};">
-        {{ users[message.author|string].display_name }}
-        <div id="message-id-{{ message.id }}" class="invisible popover">User ID: {{ message.id }}</div>
-    </span>
-    <span class="message_header">
-        {{ utils.format_timestamp(message.created_at) }}
-    </span>
-    {% if message.edited_at %}
-    <span class="message_header">
-        Edited: {{ utils.format_timestamp(message.edited_at) }}
-    </span>
-    {% endif %}
-    {% if message.referenced_message != None %}
-    <span>
-        <a class="message_reference" href="#message-{{ message.referenced_message.message_id }}">
-            Referenced-Message
-            ({{ message.referenced_message.message_id }})
-        </a>
-    </span>
-    {% endif %}
-    {% if message.content %}
-    <div class="message_content">
-        {{ message.content }}
+    <div class="avatar-container">
+        <img class="avatar" src="{{ users[message.author|string].avatar.url }}">
     </div>
-    {% endif %}
-    {% for embed in message.embeds %}
-    {{ Embed(embed, utils) }}
-    {% endfor %}
-    {% if message.components %}
-    {{ UiComponents(message.components, utils) }}
-    {% endif %}
+
+    <div class="content-container">
+        <span onclick="document.getElementById('message-id-{{ message.id }}').classList.toggle('invisible')"
+            class="message_header popup_container username"
+            style="color: {{ utils.int_color_to_hex(utils.get_highest_role_color(message.author)) }};">
+            {{ users[message.author|string].display_name }}
+            <div id="message-id-{{ message.id }}" class="invisible popover">User ID: {{ message.id }}</div>
+        </span>
+        <span class="message_header date">
+            {{ utils.format_timestamp(message.created_at) }}
+        </span>
+        {% if message.edited_at %}
+        <span class="message_header date">
+            Edited: {{ utils.format_timestamp(message.edited_at) }}
+        </span>
+        {% endif %}
+        {% if message.referenced_message != None %}
+        <span>
+            <a class="message_reference" href="#message-{{ message.referenced_message.message_id }}">
+                Referenced-Message
+                ({{ message.referenced_message.message_id }})
+            </a>
+        </span>
+        {% endif %}
+        {% if message.content %}
+        <div class="message_content">
+            {{ message.content }}
+        </div>
+        {% endif %}
+        {% for embed in message.embeds %}
+        {{ Embed(embed, utils) }}
+        {% endfor %}
+        {% if message.components %}
+        {{ UiComponents(message.components, utils) }}
+        {% endif %}
+    </div>
 </div>
 {% endmacro %}
