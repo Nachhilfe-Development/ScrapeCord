@@ -1,5 +1,5 @@
 {% macro Embed(embed, utils) %}
-<div class="embed_holder" style="background: {{ utils.int_color_to_hex(embed.color) }}">
+<div class="embed_holder" style="border-left: 5px solid {{ utils.int_color_to_hex(embed.color) }}">
     <div class="embed">
         <h3>{{ embed.title }}</h3>
         <p>{{ embed.description }}</p>
@@ -7,7 +7,7 @@
         <div class="embed_field_container">
             {% for field in embed.fields %}
             <div class="embed_field">
-                <h4>{{ field.name }}</h4>
+                <h4 class="embed_field_title">{{ field.name }}</h4>
                 <p>{{ field.value }}</p>
             </div>
             {% if field.inline == False %}
